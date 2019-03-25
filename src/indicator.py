@@ -3,7 +3,9 @@ __author__ = 'qwteng'
 import time
 import logging
 from amarket.ds.data_source import *
+from amarket.utils.timeUtils import *
 from init_env import *
+
 logfile = 'log.txt'
 logging.basicConfig(
         level=logging.INFO,
@@ -20,6 +22,18 @@ logging.getLogger('').addHandler(console)
 ts_api = get_tsapi()
 stocks = get_stock_basic(ts_api)
 date = '20190322'
+daily_da = {
+        'limit_up_codes': [],
+        'limit_up0':0,
+        'limit_up1':0,
+        'limit_up2':0,
+        'limit_up3':0,
+        'limit_up4':0,
+        'limit_down_codes':[],
+        'limit_down0':0,
+        'limit_down1':0
+}
+
 for row in stocks.itertuples(index=True, name='Pandas'):
     ts_code = getattr(row, 'ts_code')
     time.sleep(0.4)
@@ -28,7 +42,7 @@ for row in stocks.itertuples(index=True, name='Pandas'):
     if bar is None or bar.size<1:
         logging.warn(str(bar))
         continue
-    change = bar.loc[0][ 'change']
+    change = bar.loc[0]['change']
     logging.info(ts_code + ', ' + str(change))
     if change > 9.0:
         logging.info('*******')
