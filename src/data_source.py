@@ -11,6 +11,11 @@ def get_tsapi():
     return ts.pro_api()
 
 
+# get stock daily price
+def get_stock_daily(ts_api, code, start_date, end_date):
+    pass
+
+
 # get stock basic info to dataframe
 def get_stock_basic(ts_api):
     df_stock_basic = ts_api.query(
@@ -53,9 +58,50 @@ def get_quater_range(quater):
     return quater_map.get(quater)
 
 
+class StockPrice:
+    def __init__(self):
+        self.code = ""
+        self.name = ""
+        self.open = 0.0
+        self.lastclose = 0.0
+        self.present = 0.0
+        self.high = 0.0
+        self.low = 0.0
+
+    def to_str(self):
+        map = {}
+        map['code'] = self.code
+        map['name'] = self.name
+        map['open'] = self.open
+        map['lastclose'] = self.lastclose
+        map['present'] = self.present
+        map['high'] = self.high
+        map['low'] = self.low
+        return str(map)
+
+
+def sina_realtime_to_stockprice(text):
+    elems = text.split(',')
+    name = elems[0].split('="')[1]
+    open = elems[1]
+    lastclose = elems[2]
+    present = elems[3]
+    high = elems[4]
+    low = elems[5]
+    stockPrice = StockPrice()
+    stockPrice.name = name
+    stockPrice.open = open
+    stockPrice.lastclose = lastclose
+    stockPrice.present = present
+    stockPrice.high = high
+    stockPrice.low = low
+    return stockPrice
+
+
 # get real time price
 def get_sina_source_realtime(code):
     BASIC_URL = 'http://hq.sinajs.cn/list='
     req = requests.get(BASIC_URL + code)
     text = req.text
-    return text
+    stockPrice = sina_realtime_to_stockprice(text)
+    return stockPrice

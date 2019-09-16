@@ -2,6 +2,19 @@
 __author__ = 'qwteng'
 
 import logging
+from yaml import load
+try:
+    from yaml import CLoader as Loader
+except ImportError:
+    from yaml import Loader
+
+
+def get_yaml_data(yaml_file):
+    file = open(yaml_file, 'r', encoding='utf-8')
+    file_data = file.read()
+    file.close()
+    data = load(file_data, Loader=Loader)
+    return data
 
 
 def logger_init(logfile):

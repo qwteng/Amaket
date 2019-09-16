@@ -1,0 +1,2 @@
+logfile: "app.log"
+dbname: "../data/stockinfo.db"
