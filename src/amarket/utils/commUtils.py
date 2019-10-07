@@ -17,9 +17,9 @@ def get_yaml_data(yaml_file):
     return data
 
 
-def logger_init(logfile):
+def log_init(logfile):
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
         datefmt='%a, %d %b %Y %H:%M:%S',
         filename=logfile,
